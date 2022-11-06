@@ -1,0 +1,14 @@
+node_modules/*
+abi/*
+_node_modules/*
+yarn.lock
+test/*.t.sol
+node_modules
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts

@@ -1,0 +1,5 @@
+A=a+const
+B=b+const
+C1=A+B-const=a+b+const
+C2=A+const-B=a-b+const
+C3=A*B-const(A+B-const-1)=a*b+const*(a+b)+const*const-const(A+B-const-1)=a*b+const+const(const-1+a+b)-const(A+B-const-1)=a*b+const
