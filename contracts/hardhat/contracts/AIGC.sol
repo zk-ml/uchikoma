@@ -34,7 +34,7 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
     address public immutable mintVerifier;
 
     // Mapping from tokenId to on-chain image
-    address[] private content;
+    mapping(uint256 => uint8[3072]) private content;
 
     constructor(
         uint256 maxBatchSize_,
@@ -66,7 +66,12 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
 
         uint256 tokenId = currentIndex;
 
-        content.push(SSTORE2.write(abi.encodePacked(data.publicData)));
+        uint8[3072] memory contentData;
+        for (uint256 i = 0; i < 3072; i++) {
+            contentData[i] = data.publicData[i];
+        }
+
+        content[tokenId] = contentData;
 
         _safeMint(creator, 1);
 
@@ -95,22 +100,15 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
         '<svg image-rendering="pixelated" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" > <image width="100%" height="100%" xlink:href="data:image/bmp;base64,';
     string private footer = '" /> </svg>';
 
-    function _renderOriginal(uint256 tokenId)
+    function _render(uint256 tokenId)
         internal
         view
         virtual
         returns (string memory)
     {
-        bytes memory rawData = SSTORE2.read(content[tokenId]);
         uint8[] memory image = new uint8[](3072);
-        for (uint256 j = 0; j < 32; j++) {
-            for (uint256 c = 0; c < 3; c++) {
-                for (uint256 k = 0; k < 32; k++) {
-                    image[(k * 32 + j) * 3 + (2 - c)] = uint8(
-                        rawData[((k * 32 + j) * 3 + c) * 32 + 31 - k]
-                    );
-                }
-            }
+        for (uint256 i = 0; i < 3072; i++) {
+            image[i] = content[tokenId][i];
         }
         string memory enc = EBMP.encodeBMP(image, 32, 32, 3);
 
@@ -131,7 +129,7 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
             "ERC721Metadata: URI query for nonexistent token"
         );
         string memory img;
-        img = _renderOriginal(tokenId);
+        img = _render(tokenId);
 
         string memory json = Base64.encode(
             bytes(

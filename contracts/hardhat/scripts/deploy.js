@@ -52,9 +52,15 @@ async function main() {
   
   let publicData = [];
   for (let i = 0; i < 3072; i++) {
+<<<<<<< HEAD
     publicData.push(i % 127 + 127);
+=======
+    publicData.push(i % 127 + 45);
+>>>>>>> f24c4a3 (update contract)
   }
 
+  console.log(publicData);
+  
   const mintData = {
     privateData: privateData,
     publicData: publicData,
