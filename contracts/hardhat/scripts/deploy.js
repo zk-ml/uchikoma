@@ -42,21 +42,19 @@ async function main() {
   console.log("Contract address:", _nft.address);
   await _nft.deployed();
   const nft = AIGC.connect(admin).attach(_nft.address);
-
+  
+  let rawdata = fs.readFileSync('./call.json');
+  let data = JSON.parse(rawdata);
   const privateData = {
-    a: [0,0],
-    b: [0,0,0,0],
-    c: [0,0]
+    a: data[0],
+    b: data[1],
+    c: data[2]
   };
 
-  
+
   let publicData = [];
   for (let i = 0; i < 3072; i++) {
-<<<<<<< HEAD
-    publicData.push(i % 127 + 127);
-=======
-    publicData.push(i % 127 + 45);
->>>>>>> f24c4a3 (update contract)
+    publicData.push(data[3][i]);
   }
 
   console.log(publicData);

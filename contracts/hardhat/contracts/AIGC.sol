@@ -14,7 +14,7 @@ import {Base64} from "./Base64.sol";
 
 struct ZeroKnowledgePrivateData {
     uint256[2] a;
-    uint256[4] b;
+    uint256[2][2] b;
     uint256[2] c;
 }
 
