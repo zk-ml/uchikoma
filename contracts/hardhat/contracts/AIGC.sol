@@ -36,17 +36,6 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
     // Mapping from tokenId to on-chain image
     address[] private content;
 
-    // Event for backend to know that a new NFT is minted
-    event Mint(
-        address indexed creator,
-        uint256 indexed uniqueId,
-        uint256 indexed tokenId
-    );
-
-    event Revealed(
-        uint256 indexed tokenId
-    );
-
     constructor(
         uint256 maxBatchSize_,
         uint256 collectionSize_,
@@ -81,8 +70,6 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
 
         _safeMint(creator, 1);
 
-        // Emit an event to let the backend know a NFT has been minted
-        emit Mint(creator, data.publicData[4], tokenId);
     }
 
     function publicMint(MintData calldata data)
@@ -116,8 +103,14 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
     {
         bytes memory rawData = SSTORE2.read(content[tokenId]);
         uint8[] memory image = new uint8[](3072);
-        for (uint256 i = 0; i < 3072; i++) {
-            image[i] = uint8(rawData[i]);
+        for (uint256 j = 0; j < 32; j++) {
+            for (uint256 c = 0; c < 3; c++) {
+                for (uint256 k = 0; k < 32; k++) {
+                    image[(k * 32 + j) * 3 + (2 - c)] = uint8(
+                        rawData[((k * 32 + j) * 3 + c) * 32 + 31 - k]
+                    );
+                }
+            }
         }
         string memory enc = EBMP.encodeBMP(image, 32, 32, 3);
 

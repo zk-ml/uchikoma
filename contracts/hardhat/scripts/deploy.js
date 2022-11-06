@@ -52,7 +52,7 @@ async function main() {
   
   let publicData = [];
   for (let i = 0; i < 3072; i++) {
-    publicData.push(i % 256);
+    publicData.push(i % 127 + 127);
   }
 
   const mintData = {
