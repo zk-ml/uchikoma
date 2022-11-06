@@ -52,7 +52,6 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
     }
 
     function _mint(address creator, MintData calldata data) internal {
-        /*
         require(
             MintVerifier(mintVerifier).verifyProof(
                 data.privateData.a,
@@ -62,7 +61,6 @@ contract AIGC is Ownable, ERC721A, ReentrancyGuard {
             ),
             "invalid mint proof"
         );
-        */
 
         uint256 tokenId = currentIndex;
 
