@@ -1,5 +1,3 @@
-// from 0xZKML/zk-mnist
-
 pragma circom 2.0.3;
 
 include "../circomlib/comparators.circom";

@@ -7,8 +7,8 @@ sys.path.insert(0, path.join(__ROOT__, "python"))
 import argparse
 
 parser = argparse.ArgumentParser(
-        prog="zkml",
-        description="zkml translator from model into circuits",
+        prog="uchikoma",
+        description="uchikoma translator from model into circuits",
         )
 
 parser.add_argument("symbol", help="model symbol file name")
@@ -38,11 +38,11 @@ import numpy as np
 
 import json
 
-from zkml import model, circom, transformer
-from zkml import inference as infer
-from zkml import circom_impl
+from uchikoma import model, circom, transformer
+from uchikoma import inference as infer
+from uchikoma import circom_impl
 
-def zkml_main():
+def uchikoma_main():
     args = parser.parse_args()
     print(args)
 
@@ -169,4 +169,4 @@ def zkml_main():
 
 
 if __name__ == "__main__":
-    zkml_main()
+    uchikoma_main()
